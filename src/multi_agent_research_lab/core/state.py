@@ -7,7 +7,12 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from multi_agent_research_lab.core.schemas import AgentResult, ResearchQuery, SourceDocument
+from multi_agent_research_lab.core.schemas import (
+    AgentName,
+    AgentResult,
+    ResearchQuery,
+    SourceDocument,
+)
 
 
 class ResearchState(BaseModel):
@@ -32,3 +37,13 @@ class ResearchState(BaseModel):
 
     def add_trace_event(self, name: str, payload: dict[str, Any]) -> None:
         self.trace.append({"name": name, "payload": payload})
+
+    def add_agent_result(
+        self, agent: AgentName, content: str, metadata: dict[str, Any] | None = None
+    ) -> None:
+        self.agent_results.append(
+            AgentResult(agent=agent, content=content, metadata=metadata or {})
+        )
+
+    def add_error(self, error_message: str) -> None:
+        self.errors.append(error_message)

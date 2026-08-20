@@ -15,3 +15,10 @@ class LocalArtifactStore:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         return path
+
+    def read_text(self, relative_path: str) -> str:
+        path = self.root / relative_path
+        return path.read_text(encoding="utf-8")
+
+    def exists(self, relative_path: str) -> bool:
+        return (self.root / relative_path).exists()

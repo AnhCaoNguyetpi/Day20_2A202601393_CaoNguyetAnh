@@ -111,7 +111,17 @@ Cách khắc phục (chọn 1 trong 3):
 
 ## Exit ticket
 
-Mỗi nhóm trả lời 2 câu:
+### 1. Case nào nên dùng multi-agent? Vì sao?
+- **Nên dùng:**
+  - **Nghiên cứu tài liệu đa tầng (Deep Technical Research):** Cần phân tách rõ ràng việc thu thập dữ liệu thô (Search), đánh giá logic/so sánh chéo (Analyst), và biên tập định dạng văn phong kèm trích dẫn (Writer).
+  - **Hệ thống có nhiều công cụ & quyền hạn riêng biệt (Role-based Tool Access):** Ví dụ trong Customer Support, Agent Triage chỉ phân loại, Agent Billing có quyền truy cập DB thanh toán, Agent Technical truy cập docs kỹ thuật.
+  - **Quy trình đòi hỏi kiểm duyệt độc lập (Independent Verification / Human-in-the-loop):** Có bước Critic hoặc Reviewer chấm điểm và bắt buộc Agent Writer sửa lại nếu chưa đạt rubric hoặc citation coverage dưới ngưỡng.
+- **Vì sao:** Tránh loãng ngữ cảnh (context saturation), giảm thiểu ảo giác (hallucination), dễ cô lập lỗi (isolation) và cho phép tối ưu prompt/model riêng cho từng vai trò (chọn model nhỏ rẻ cho search/triage, model lớn cho reasoning).
 
-1. Case nào nên dùng multi-agent? Vì sao?
-2. Case nào không nên dùng multi-agent? Vì sao?
+### 2. Case nào không nên dùng multi-agent? Vì sao?
+- **Không nên dùng:**
+  - **Truy vấn đơn giản, độ trễ thấp (Sub-second Latency Queries):** Tóm tắt một đoạn văn bản ngắn, dịch thuật, định dạng JSON đơn giản, FAQ trực tiếp.
+  - **Quy trình tuần tự tuyến tính không có điều kiện rẽ nhánh (Simple Linear Pipelines):** Khi bài toán chỉ là Prompt A -> Prompt B cố định, dùng single-agent hoặc chain tuần tự đơn giản sẽ hiệu quả hơn nhiều so với việc duy trì đồ thị trạng thái phức tạp.
+  - **Dự án ngân sách token/chi phí hạn hẹp:** Multi-agent tiêu thụ gấp 3-5 lần token do chi phí truyền tải context giữa các node trong shared state.
+- **Vì sao:** Gây lãng phí chi phí token không cần thiết, tăng độ trễ (latency overhead) do nhiều roundtrips LLM, và tăng độ phức tạp trong việc debug đồ thị trạng thái.
+
